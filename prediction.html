@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Diagnostics Panel</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; }
+        body { min-height: 100vh; background-color: #0b0f19; background-image: radial-gradient(circle at 50% 0%, #16223f 0%, #0b0f19 70%); color: #f3f4f6; padding: 40px 20px; display: flex; justify-content: center; align-items: center; }
+        .container { width: 100%; max-width: 750px; background: #111827; border: 1px solid #1f2937; border-radius: 16px; padding: 40px; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.7); animation: fadeIn 0.4s ease-out; }
+        h2 { text-align: center; color: #38bdf8; font-size: 24px; font-weight: 700; margin-bottom: 6px; text-transform: capitalize; letter-spacing: -0.5px; }
+        p { text-align: center; color: #9ca3af; font-size: 13px; margin-bottom: 35px; }
+        .form-grid { display: none; grid-template-columns: 1fr 1fr; gap: 20px; }
+        .section-title { grid-column: span 2; font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: #818cf8; margin-top: 15px; border-bottom: 1px solid #1f2937; padding-bottom: 6px; }
+        .input-group { display: flex; flex-direction: column; }
+        label { margin-bottom: 6px; font-size: 13px; color: #cbd5e0; font-weight: 500; }
+        input, select { width: 100%; padding: 11px 14px; border: 1px solid #374151; border-radius: 8px; background: #1f2937; color: white; outline: none; font-size: 14px; transition: border-color 0.2s, box-shadow 0.2s; }
+        input:focus, select:focus { border-color: #38bdf8; box-shadow: 0 0 0 2px rgba(56, 189, 248, 0.2); }
+        select option { background-color: #111827; color: white; }
+        .button-wrapper { width: 100%; display: flex; justify-content: center; margin-top: 35px; border-top: 1px solid #1f2937; padding-top: 25px; }
+        .btn { width: 100%; max-width: 380px; padding: 14px; background: #3182ce; border: none; border-radius: 8px; color: white; font-weight: 600; font-size: 15px; cursor: pointer; transition: all 0.2s; box-shadow: 0 4px 12px rgba(49, 130, 206, 0.3); }
+        .btn:hover { background: #2b6cb0; transform: translateY(-1px); box-shadow: 0 6px 16px rgba(49, 130, 206, 0.4); }
+        .cancel { display: block; text-align: center; margin-top: 20px; color: #9ca3af; text-decoration: none; font-size: 13px; font-weight: 500; transition: color 0.2s; }
+        .cancel:hover { color: #f3f4f6; text-decoration: underline; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>{{ type }} Diagnostics Portal</h2>
+        <p id="form-desc">Awaiting unit assignment initialization vectors...</p>
+        
+        <form action="{{ url_for('predict', disease_type=type) }}" method="POST">
+            
+            <!-- 1. LIVER FORM INTERFACE -->
+            <div id="liver-form" class="form-grid">
+                <div class="section-title">Patient Profile Controls</div>
+                <div class="input-group"><label>Patient ID Reference</label><input type="number" name="Patient_ID" value="102"></div>
+                <div class="input-group"><label>Age (Years)</label><input type="number" name="Age" value="45"></div>
+                <div class="input-group"><label>Biological Gender</label><select name="Gender"><option value="1">Male</option><option value="0">Female</option></select></div>
+                <div class="section-title">Serum Enzymes & Bilirubin</div>
+                <div class="input-group"><label>Total Bilirubin (mg/dL)</label><input type="number" step="0.01" name="Total_Bilirubin" value="1.2"></div>
+                <div class="input-group"><label>Direct Bilirubin (mg/dL)</label><input type="number" step="0.01" name="Direct_Bilirubin" value="0.4"></div>
+                <div class="input-group"><label>Alkaline Phosphatase (U/L)</label><input type="number" step="0.1" name="Alkaline_Phosphotase" value="210"></div>
+                <div class="input-group"><label>ALT Level (U/L)</label><input type="number" step="0.1" name="Alamine_Aminotransferase" value="45"></div>
+                <div class="input-group"><label>AST Level (U/L)</label><input type="number" step="0.1" name="Aspartate_Aminotransferase" value="56"></div>
+                <div class="section-title">Proteins Synthesis Profile</div>
+                <div class="input-group"><label>Total Proteins (g/dL)</label><input type="number" step="0.01" name="Total_Proteins" value="6.8"></div>
+                <div class="input-group"><label>Albumin (g/dL)</label><input type="number" step="0.01" name="Albumin" value="3.2"></div>
+                <div class="input-group"><label>Albumin/Globulin Ratio</label><input type="number" step="0.01" name="Albumin_and_Globulin_Ratio" value="0.9"></div>
+                <div class="section-title">Physiological Histology</div>
+                <div class="input-group"><label>Alcohol Consumption</label><select name="Alcohol_Consumption"><option value="1">Yes</option><option value="0">No</option></select></div>
+                <div class="input-group"><label>Smoking Status</label><select name="Smoking_Status"><option value="1">Yes</option><option value="0">No</option></select></div>
+                <div class="input-group"><label>Spleen Dimension</label><select name="Spleen_Size"><option value="1">Normal</option><option value="0">Enlarged (Splenomegaly)</option></select></div>
+                <div class="input-group"><label>Fibrosis Histology</label><select name="Fibrosis_Stage"><option value="0">F0 (Normal)</option><option value="1">F1</option><option value="2">F2</option><option value="3">F3</option><option value="4">F4 (Cirrhosis)</option></select></div>
+                <div class="input-group"><label>Child-Pugh Class</label><select name="Child_Pugh_Class"><option value="0">Class A</option><option value="1">Class B</option><option value="2">Class C</option></select></div>
+                <div class="input-group"><label>Platelet Density Count</label><input type="number" name="Platelets" value="250000"></div>
+                <div class="input-group"><label>Prothrombin Time (sec)</label><input type="number" step="0.1" name="Prothrombin_Time" value="12.5"></div>
+            </div>
+
+            <!-- 2. KIDNEY FORM INTERFACE -->
+            <div id="kidney-form" class="form-grid">
+                <div class="section-title">Renal Biomarker Profiling</div>
+                <div class="input-group"><label>Specific Gravity Matrix</label><input type="number" step="0.001" name="Specific_Gravity" value="1.020"></div>
+                <div class="input-group"><label>Albumin Index Value (0-5)</label><input type="number" name="Albumin" value="1"></div>
+                <div class="input-group"><label>Sugar Quantization Score (0-5)</label><input type="number" name="Sugar" value="0"></div>
+                <div class="input-group"><label>Blood Urea Density (mg/dL)</label><input type="number" step="0.1" name="Blood_Urea" value="42.5"></div>
+                <div class="input-group"><label>Serum Creatinine Level (mg/dL)</label><input type="number" step="0.01" name="Serum_Creatinine" value="1.20"></div>
+            </div>
+
+            <!-- 3. HEART FORM INTERFACE -->
+            <div id="heart-form" class="form-grid">
+                <div class="section-title">Cardiology Indicators</div>
+                <div class="input-group"><label>Age</label><input type="number" name="Age" value="54"></div>
+                <div class="input-group"><label>Biological Gender</label><select name="Gender"><option value="1">Male</option><option value="0">Female</option></select></div>
+                <div class="input-group"><label>Chest Pain Type Index (0-3)</label><input type="number" min="0" max="3" name="Chest_Pain" value="2"></div>
+                <div class="input-group"><label>Resting Blood Pressure</label><input type="number" name="Resting_BP" value="130"></div>
+                <div class="input-group"><label>Serum Cholesterol (mg/dL)</label><input type="number" name="Cholesterol" value="240"></div>
+            </div>
+
+            <!-- 4. CANCER FORM INTERFACE -->
+            <div id="cancer-form" class="form-grid">
+                <div class="section-title">Cellular Mass Morphometry</div>
+                <div class="input-group"><label>Radius Mean</label><input type="number" step="0.01" name="Radius_Mean" value="14.20"></div>
+                <div class="input-group"><label>Texture Mean</label><input type="number" step="0.01" name="Texture_Mean" value="19.30"></div>
+                <div class="input-group"><label>Perimeter Mean Value</label><input type="number" step="0.1" name="Perimeter_Mean" value="92.5"></div>
+                <div class="input-group"><label>Area Mean Factor</label><input type="number" step="0.1" name="Area_Mean" value="650.0"></div>
+                <div class="input-group"><label>Smoothness Uniformity Mean</label><input type="number" step="0.0001" name="Smoothness_Mean" value="0.0960"></div>
+            </div>
+
+            <!-- 5. DIABETES FORM INTERFACE -->
+            <div id="diabetes-form" class="form-grid">
+                <div class="section-title">Metabolic Parameters</div>
+                <div class="input-group"><label>Plasma Glucose Concentration (mg/dL)</label><input type="number" name="Glucose" value="115"></div>
+                <div class="input-group"><label>Serum Insulin Level (mu U/ml)</label><input type="number" name="Insulin" value="85"></div>
+                <div class="input-group"><label>Body Mass Index (BMI)</label><input type="number" step="0.1" name="BMI" value="28.4"></div>
+                <div class="input-group"><label>Age</label><input type="number" name="Age" value="38"></div>
+            </div>
+
+            <!-- 6. STROKE FORM INTERFACE -->
+            <div id="stroke-form" class="form-grid">
+                <div class="section-title">Neurological Risk Factors</div>
+                <div class="input-group"><label>Age</label><input type="number" name="Age" value="65"></div>
+                <div class="input-group"><label>Clinical Hypertension</label><select name="Hypertension"><option value="0">Negative</option><option value="1">Positive</option></select></div>
+                <div class="input-group"><label>Chronic Heart Disease</label><select name="Heart_Disease"><option value="0">Negative</option><option value="1">Positive</option></select></div>
+                <div class="input-group"><label>Average Glucose Level (mg/dL)</label><input type="number" step="0.01" name="Glucose_Level" value="195.40"></div>
+                <div class="input-group"><label>Body Mass Index (BMI)</label><input type="number" step="0.1" name="BMI" value="30.2"></div>
+            </div>
+            
+            <div class="button-wrapper">
+                <button type="submit" class="btn">Execute Machine Learning Diagnosis</button>
+            </div>
+        </form>
+        <a href="{{ url_for('dashboard') }}" class="cancel">← Abort Task and Return to Hub</a>
+    </div>
+
+    <script>
+        const diseaseType = "{{ type }}";
+        const formId = diseaseType + "-form";
+        const descText = document.getElementById('form-desc');
+        
+        const targetForm = document.getElementById(formId);
+        if (targetForm) {
+            targetForm.style.display = 'grid';
+            descText.innerText = "Complete the multi-parametric form layers below to feed the isolated classification pipelines.";
+        } else {
+            descText.innerText = "Error: System failed to map targeting metric criteria vectors.";
+        }
+    </script>
+</body>
+</html>

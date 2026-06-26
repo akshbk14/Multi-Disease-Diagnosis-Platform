@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Clinical AI Diagnostics - System Hub</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif; }
+        body { min-height: 100vh; background-color: #0b0f19; background-image: radial-gradient(circle at 50% 0%, #16223f 0%, #0b0f19 70%); color: #f3f4f6; padding: 40px 20px; display: flex; justify-content: center; align-items: center; }
+        .hub-container { width: 100%; max-width: 950px; background: #111827; border: 1px solid #1f2937; border-radius: 16px; padding: 40px; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.7); animation: fadeIn 0.6s ease-out; }
+        .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 40px; border-bottom: 1px solid #1f2937; padding-bottom: 20px; }
+        .header h1 { font-size: 26px; font-weight: 700; letter-spacing: -0.5px; background: linear-gradient(to right, #38bdf8, #818cf8); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .logout { color: #f87171; text-decoration: none; font-size: 14px; font-weight: 600; padding: 8px 16px; border: 1px solid rgba(248, 113, 113, 0.2); border-radius: 8px; transition: all 0.2s; background: rgba(248, 113, 113, 0.05); }
+        .logout:hover { background: #f87171; color: #0b0f19; border-color: #f87171; box-shadow: 0 0 15px rgba(248, 113, 113, 0.3); }
+        .grid-options { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 24px; }
+        .module-card { background: #1f2937; border: 1px solid #374151; padding: 28px 24px; border-radius: 12px; text-decoration: none; color: #e5e7eb; transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1); display: flex; flex-direction: column; justify-content: space-between; min-height: 170px; position: relative; overflow: hidden; }
+        .module-card::before { content: ''; position: absolute; top: 0; left: 0; width: 4px; height: 100%; background: #38bdf8; opacity: 0; transition: opacity 0.2s; }
+        .module-card h3 { font-size: 16px; font-weight: 600; color: #f3f4f6; margin-bottom: 8px; display: flex; justify-content: space-between; align-items: center; }
+        .module-card p { font-size: 13px; color: #9ca3af; line-height: 1.6; }
+        .badge { font-size: 10px; font-weight: 700; text-transform: uppercase; padding: 3px 8px; border-radius: 20px; letter-spacing: 0.5px; }
+        .badge.active { background: rgba(52, 211, 153, 0.1); color: #34d399; border: 1px solid rgba(52, 211, 153, 0.2); }
+        .badge.sim { background: rgba(251, 191, 36, 0.1); color: #fbbf24; border: 1px solid rgba(251, 191, 36, 0.2); }
+        .module-card:hover { transform: translateY(-4px); border-color: #4b5563; background: #263143; box-shadow: 0 12px 20px -10px rgba(0, 0, 0, 0.5); }
+        .module-card:hover::before { opacity: 1; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+    </style>
+</head>
+<body>
+    <div class="hub-container">
+        <div class="header">
+            <h1>Clinical Intelligence Platform</h1>
+            <a href="{{ url_for('logout') }}" class="logout">Sign Out</a>
+        </div>
+        <div class="grid-options">
+            <a href="{{ url_for('predict', disease_type='liver') }}" class="module-card">
+                <h3>Hepatology Unit <span class="badge active">Live Model</span></h3>
+                <p>Run complex Random Forest diagnostics for Cirrhosis tracking based on 18 continuous laboratory biomarkers.</p>
+            </a>
+            <a href="{{ url_for('predict', disease_type='kidney') }}" class="module-card">
+                <h3>Nephrology Unit <span class="badge active">Live Model</span></h3>
+                <p>Assess chronic kidney diseases using predictive metrics for laboratory renal profiles.</p>
+            </a>
+            <a href="{{ url_for('predict', disease_type='heart') }}" class="module-card">
+                <h3>Cardiology Unit <span class="badge sim">Simulation</span></h3>
+                <p>Compute dynamic cardiovascular health criteria and myocardial risk probability mapping vectors.</p>
+            </a>
+            <a href="{{ url_for('predict', disease_type='cancer') }}" class="module-card">
+                <h3>Oncology Unit <span class="badge sim">Simulation</span></h3>
+                <p>Execute binary screening classifications parsing geometric cell mass characteristics.</p>
+            </a>
+            <a href="{{ url_for('predict', disease_type='diabetes') }}" class="module-card">
+                <h3>Endocrinology Unit <span class="badge sim">Simulation</span></h3>
+                <p>Analyze insulin thresholds, body metabolic indices, and glucose tolerance matrices.</p>
+            </a>
+            <a href="{{ url_for('predict', disease_type='stroke') }}" class="module-card">
+                <h3>Neurology Unit <span class="badge sim">Simulation</span></h3>
+                <p>Monitor neurological arterial indicators and systemic hypertension profiles.</p>
+            </a>
+        </div>
+    </div>
+</body>
+</html>
